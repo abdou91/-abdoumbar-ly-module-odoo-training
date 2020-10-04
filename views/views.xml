@@ -1,0 +1,171 @@
+<odoo>
+  <data>
+    <!-- **************************** topic ************************* -->
+    <record model="ir.ui.view" id="topic_view_form"> 
+      <field name="name">topic.form</field>
+      <field name="model">training.topic</field>
+      <field name="arch" type="xml">
+        <form string = "topic">
+          <sheet>
+              <field name="name"/>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="topic_view_tree">
+      <field name="name">topic.tree</field>
+      <field name="model">training.topic</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="topic_create_action">
+      <field name="name">Thème</field>
+      <field name="res_model">training.topic</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                  Cliquez pour creer un nouveau theme.
+              </p>
+      </field>
+    </record> 
+
+    <!-- **************************** course ************************* -->
+    <record model="ir.ui.view" id="course_view_form"> 
+      <field name="name">course.form</field>
+      <field name="model">training.course</field>
+      <field name="arch" type="xml">
+        <form string = "course">
+          <sheet>
+            <group col="2">
+              <group>
+                <field name="name"/>
+                <field name="description"/>
+              </group>
+              <group>
+                <field name="topic_id"/>
+                <field name="duration"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="course_view_tree">
+      <field name="name">course.tree</field>
+      <field name="model">training.course</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="description"/>
+          <field name="topic_id"/>
+          <field name="duration"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="course_create_action">
+      <field name="name">Cours</field>
+      <field name="res_model">training.course</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                  Cliquez pour creer un nouveau cours.
+              </p>
+      </field>
+    </record> 
+
+<!-- **************************** Session ************************* -->
+    <record model="ir.ui.view" id="session_view_form"> 
+      <field name="name">session.form</field>
+      <field name="model">training.session</field>
+      <field name="arch" type="xml">
+        <form string = "Session">
+          <sheet>
+            <group col="2">
+              <group>
+                <field name="course_id"/>
+                <field name="instructor_id" context="{'default_is_instructor': True}"/>
+                <field name="max_attendees"/>
+                <field name="attendee_ids" widget="many2many_tags"/>
+              </group>
+              <group>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="duration"/>
+              </group>
+            </group>     
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="session_view_tree">
+      <field name="name">training.session.tree</field>
+      <field name="model">training.session</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="course_id"/>
+          <field name="instructor_id"/>
+          <field name="start_date"/>
+          <field name="end_date"/>
+          <field name="duration"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="session_create_action">
+      <field name="name">Session</field>
+      <field name="res_model">training.session</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                  Cliquez pour creer une nouvelle session.
+              </p>
+      </field>
+    </record> 
+
+    <!-- ******************************* contact ***************** -->
+    <record id="contact_view_form" model="ir.ui.view">
+            <field name="name">base.view_partner_form.inherited</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field eval="18" name="priority"/>
+            <field name="arch" type="xml">
+              <field name="company_type" position="after">
+                <div class="o_row">
+                  <label for="is_instructor" string="Est un formateur" class="oe_inline"/>
+                  <field name="is_instructor"  class="oe_inline"/>
+                </div>
+              </field>
+                
+            </field>
+        </record>
+
+
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="Gestion de sessions d'apprentissage" id="menu_root"/>
+    <!-- menu categories -->
+
+    <menuitem name="Sessions" id="session_menu" parent="menu_root" sequence="10"/>
+    <menuitem name="Cours" id="course_menu" parent="menu_root" sequence="20"/>
+    <menuitem name="Thèmes" id="topic_menu" parent="menu_root" sequence="30"/>
+    <!-- actions -->
+
+    <menuitem name="Liste des sessions" id="session_list" parent="session_menu"
+              action="session_create_action"/>
+    <menuitem name="Liste des cours " id="course_list" parent="course_menu"
+              action="course_create_action"/>
+    <menuitem name="Liste des thèmes " id="topic_list" parent="topic_menu"
+              action="topic_create_action"/>
+
+  </data>
+</odoo>
